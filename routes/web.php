@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UrlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::resources([
+    'urls' => UrlController::class,
+]);
 
 Route::get(
     '/',
@@ -19,3 +23,5 @@ Route::get(
         return view('index');
     }
 );
+
+Route::post('/', [UrlController::class, 'store']);
