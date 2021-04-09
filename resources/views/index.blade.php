@@ -1,21 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>bl1ndy-analizer</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
-        <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-            }
-        </style>
+        <title>Bl1ndy-Analizer</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="csrf-param" content="_token" />
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/app.js') }}"></script>
     </head>
     <body>
-        <h1>Анализатор страниц</h1>
+        <div class="container mt-4">
+            <a href="/">Home</a>
+            <h1>Page Analizer</h1>
+            <div>
+                @if ($errors->any())
+                    <div>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            
+                <form action="/" method="POST">
+                    @csrf
+                    <label for="name">Name</label>
+                    <input id="name" type="text" name="url[name]">
+                    <input type="submit" value="Add URL">
+                </form>
+            </div>
+        </div>
     </body>
 </html>
