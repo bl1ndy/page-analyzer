@@ -16,7 +16,7 @@ class UrlController extends Controller
     public function index()
     {
         return view('url.index', [
-            'urls' => DB::table('urls')->simplePaginate(10)
+            'urls' => DB::table('urls')->paginate(5)
         ]);
     }
 
