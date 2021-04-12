@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Bl1ndy-Analizer</title>
+        <title>Bl1ndy-Analizator</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="csrf-param" content="_token" />
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -12,7 +12,7 @@
     <body>
         <div class="container mt-4">
             <a href="/">Home</a>
-            <h1>Page Analizer</h1>
+            <h1>Page Analizator</h1>
             <div>
                 @if ($errors->any())
                     <div>
