@@ -23,4 +23,4 @@ deploy:
 	git push heroku
 
 lint:
-	phpcs
+	composer phpcs
