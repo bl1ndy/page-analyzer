@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<head>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-</head>
-<body>
+@extends('index')
+
+@section('content')
     <div class="container">
-        <a href="/">Home</a>
         <h1>URLS</h1>
         <div>
             @include('flash::message')
@@ -37,4 +34,4 @@
             </nav>
         <div>
     </div>
-</body>
+@endsection
