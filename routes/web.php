@@ -15,12 +15,13 @@ use App\Http\Controllers\UrlController;
 */
 Route::resources([
     'urls' => UrlController::class,
+    'urls.checks' => UrlCheckController::class
 ]);
 
 Route::get(
     '/',
     function () {
-        return view('index');
+        return view('url.create');
     }
 );
 
