@@ -4,16 +4,13 @@
     <div class="container">
         <h1>URLS</h1>
         <div>
-            @include('flash::message')
-        </div>
-        <div>
             <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Created at</th>
-                        <th scope="col">Updated at</th>
+                        <th scope="col">Last check</th>
+                        <th scope="col">Status code</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,8 +18,8 @@
                         <tr>
                             <td>{{$url->id}}</td>
                             <td><a href="{{route('urls.show', $url->id)}}">{{$url->name}}</td>
-                            <td>{{$url->created_at}}</td>
-                            <td>{{$url->updated_at}}</td>
+                            <td>{{$url->last_check}}</td>
+                            <td>{{$url->last_status_code}}</td>
                         </tr>
                     @endforeach
                 </tbody>
