@@ -17,13 +17,6 @@ class UrlControllerTest extends TestCase
 
     public function testIndex()
     {
-        $response = $this->get('/');
-
-        $response->assertOk();
-    }
-
-    public function testUrlsIndex()
-    {
         $response = $this->get(route('urls.index'));
         $response->assertOk();
     }
