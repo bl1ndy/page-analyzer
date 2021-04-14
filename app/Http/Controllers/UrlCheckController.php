@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
 class UrlCheckController extends Controller
@@ -16,15 +17,27 @@ class UrlCheckController extends Controller
      */
     public function store(Request $request)
     {
-        $id = $request->input()['id'];
+        $urlId = $request->input()['url_id'];
+        $url = $request->input()['url_name'];
+        $currentDate = Carbon::now()->toDateTimeString();
+        $statusCode = Http::get($url)->status();
+
         DB::table('url_checks')->insert([
-            'url_id' => $id,
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString()
+            'url_id' => $urlId,
+            'status_code' => $statusCode,
+            'created_at' => $currentDate,
+            'updated_at' => $currentDate
         ]);
+
+        DB::table('urls')
+            ->where('id', '=', $urlId)
+            ->update([
+                'last_check' => $currentDate,
+                'last_status_code' => $statusCode
+            ]);
 
         flash('Url checked successfully')->success();
 
-        return redirect()->route('urls.show', ['url' => $id]);
+        return redirect()->route('urls.show', ['url' => $urlId]);
     }
 }
