@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UrlController;
+use App\Http\Controllers\UrlCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Route::get(
 );
 
 Route::post('/', [UrlController::class, 'store']);
+
+Route::post('/urls/{url}/checks', [UrlCheckController::class, 'store']);
