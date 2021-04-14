@@ -16,7 +16,7 @@ class UrlController extends Controller
     public function index()
     {
         return view('url.index', [
-            'urls' => DB::table('urls')->paginate(5)
+            'urls' => DB::table('urls')->paginate(5),
         ]);
     }
 
@@ -55,8 +55,19 @@ class UrlController extends Controller
     {
         $url = DB::table('urls')
             ->where('id', '=', $id)
-            ->get();
+            ->first();
 
-        return view('url.show', ['url' => $url]);
+        $checks = DB::table('url_checks')
+            ->where('url_id', '=', $id)
+            ->orderByDesc('created_at')
+            ->paginate(5);
+
+        return view(
+            'url.show',
+            [
+                'url' => $url,
+                'checks' => $checks,
+            ]
+        );
     }
 }
