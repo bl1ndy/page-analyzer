@@ -20,5 +20,8 @@
                     <li><a href="/urls">Sites</a></li>
                 </ul>
             </nav>
+            <div>
+                @include('flash::message')
+            </div>
         </header>
         <main>
