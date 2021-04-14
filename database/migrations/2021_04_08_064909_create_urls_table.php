@@ -17,6 +17,8 @@ class CreateUrlsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->timestamps();
+            $table->timestamp('last_check')->nullable();
+            $table->integer('last_status_code')->nullable();
         });
     }
 
