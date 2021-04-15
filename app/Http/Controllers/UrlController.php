@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreUrlRequest;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -25,15 +26,13 @@ class UrlController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param StoreUrlRequest $request
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreUrlRequest $request)
     {
-        $data = $request->validate([
-            'url.name' => 'required|unique:urls,name'
-        ]);
+        $data = $request->validated();
 
         DB::table('urls')->insert([
             'name' => $data['url']['name'],
