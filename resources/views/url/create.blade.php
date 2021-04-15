@@ -9,7 +9,7 @@
                 <form action="{{ route('home') }}" method="POST" class="row row-cols-lg-auto g-3 align-items-center">
                     @csrf
                     <div class="col-12">
-                        <label class="visually-hidden" for="inlineFormInputGroupUsername">Url</label>
+                        <label class="visually-hidden" for="name">Url</label>
                         <div class="input-group">
                             <div class="input-group-text">>>></div>
                             <input type="text" class="form-control" id="name" name="url[name]" placeholder="Type URL here">
