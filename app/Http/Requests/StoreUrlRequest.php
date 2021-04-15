@@ -14,7 +14,7 @@ class StoreUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'url.name' => 'required|url|unique:urls,name'
+            'url.name' => 'required|url'
         ];
     }
 
@@ -33,17 +33,17 @@ class StoreUrlRequest extends FormRequest
      * @param  \Illuminate\Validation\Validator  $validator
      * @return void
      */
-    // public function withValidator($validator)
-    // {
-    //     $validator->after(function ($validator) {
-    //         $errors = $validator->errors();
-    //         if ($errors->any()) {
-    //             foreach ($errors->all() as $message) {
-    //                 flash($message)->error();
-    //             }
-    //         }
-    //     });
-    // }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $errors = $validator->errors();
+            if ($errors->any()) {
+                foreach ($errors->all() as $message) {
+                    flash($message)->error();
+                }
+            }
+        });
+    }
 
     /**
      * Prepare the data for validation.
