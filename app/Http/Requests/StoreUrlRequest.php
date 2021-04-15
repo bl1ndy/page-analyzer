@@ -14,15 +14,16 @@ class StoreUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'url.name' => 'required|unique:urls,name'
+            'url.name' => 'required|url|unique:urls,name'
         ];
     }
 
     public function messages()
     {
         return [
-            'url.name.required' => 'A url is required',
-            'url.name.unique' => 'A url is already exists',
+            'url.name.required' => 'URL is required',
+            'url.name.unique' => 'URL is already exists',
+            'url.name.url' => 'Invalid url format'
         ];
     }
 
@@ -49,13 +50,10 @@ class StoreUrlRequest extends FormRequest
      *
      * @return void
      */
-    // protected function prepareForValidation()
-    // {
-    //     $this->merge([
-    //         'url.name' => fix_typos($this->title),
-    //         'body' => filter_malicious_content($this->body),
-    //         'tags' => convert_comma_separated_values_to_array($this->tags),
-    //         'is_published' => (bool) $this->is_published,
-    //     ]);
-    // }
+    protected function prepareForValidation()
+    {
+        $url = $this->url;
+        $url['name'] = mb_strtolower($this->url['name']);
+        $this->getInputSource()->replace(['url' => $url]);
+    }
 }
