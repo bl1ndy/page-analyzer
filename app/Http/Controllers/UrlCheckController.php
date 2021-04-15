@@ -9,6 +9,7 @@ use DiDom\Document;
 use DiDom\Query;
 use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
+use RuntimeException;
 
 class UrlCheckController extends Controller
 {
@@ -26,7 +27,7 @@ class UrlCheckController extends Controller
 
         try {
             [$statusCode, $h1, $keywords, $description] = $this->getCodeAndContent($url);
-        } catch (ConnectionException $e) {
+        } catch (ConnectionException | RuntimeException $e) {
             flash('Can not resolve this URL. Please, try again later')->error();
             return redirect()->route('urls.show', ['url' => $urlId]);
         }
