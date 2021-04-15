@@ -14,7 +14,7 @@ class StoreUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'url.name' => 'required|url'
+            'url.name' => 'required|url|unique:urls,name'
         ];
     }
 
