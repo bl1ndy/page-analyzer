@@ -22,28 +22,14 @@ class UrlCheckController extends Controller
     {
         $urlId = $request->input()['url_id'];
         $url = $request->input()['url_name'];
-        $currentDate = Carbon::now()->toDateTimeString();
+        $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
         try {
-            $statusCode = Http::get($url)->status();
+            [$statusCode, $h1, $keywords, $description] = $this->getCodeAndContent($url);
         } catch (ConnectionException $e) {
             flash('Can not resolve this URL. Please, try again later')->error();
             return redirect()->route('urls.show', ['url' => $urlId]);
         }
-
-        $document = new Document();
-        $document->loadHtmlFile($url);
-
-        $h1 = $document->has('h1')
-            ? $document->find('h1')[0]->text()
-            : null;
-        $keywords = $document->has('//meta[@name="keywords"]', 'XPATH')
-            ? $document->find('//meta[@name="keywords"]', Query::TYPE_XPATH)[0]->getAttribute('content')
-            : null;
-        $description = $document->has('//meta[@name="description"]', 'XPATH')
-            ? $document->find('//meta[@name="description"]', Query::TYPE_XPATH)[0]->getAttribute('content')
-            : null;
-
 
         DB::table('url_checks')->insert([
             'url_id' => $urlId,
@@ -65,5 +51,31 @@ class UrlCheckController extends Controller
         flash('Url checked successfully')->success();
 
         return redirect()->route('urls.show', ['url' => $urlId]);
+    }
+
+    /**
+     * Get status code, h1, keywords & description from page
+     *
+     * @param string $url
+     * @return array
+     */
+    private function getCodeAndContent($url)
+    {
+        $statusCode = Http::get($url)->status();
+
+        $document = new Document();
+        $document->loadHtmlFile($url);
+
+        $h1 = $document->has('h1')
+            ? $document->find('h1')[0]->text()
+            : null;
+        $keywords = $document->has('//meta[@name="keywords"]', 'XPATH')
+            ? $document->find('//meta[@name="keywords"]', Query::TYPE_XPATH)[0]->getAttribute('content')
+            : null;
+        $description = $document->has('//meta[@name="description"]', 'XPATH')
+            ? $document->find('//meta[@name="description"]', Query::TYPE_XPATH)[0]->getAttribute('content')
+            : null;
+
+        return [$statusCode, $h1, $keywords, $description];
     }
 }
