@@ -14,7 +14,7 @@ class StoreUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'url.name' => 'required|url|unique:urls,name'
+            'url.name' => 'required|url'
         ];
     }
 
@@ -22,7 +22,7 @@ class StoreUrlRequest extends FormRequest
     {
         return [
             'url.name.required' => 'URL is required',
-            'url.name.unique' => 'URL is already exists',
+            //'url.name.unique' => 'URL is already exists',
             'url.name.url' => 'Invalid url format'
         ];
     }

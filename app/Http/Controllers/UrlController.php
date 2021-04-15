@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUrlRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 
 class UrlController extends Controller
@@ -34,11 +35,16 @@ class UrlController extends Controller
         $data = $request->validated();
         $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
-        DB::table('urls')->insert([
-            'name' => $data['url']['name'],
-            'created_at' => $currentDate,
-            'updated_at' => $currentDate
-        ]);
+        try {
+            DB::table('urls')->insert([
+                'name' => $data['url']['name'],
+                'created_at' => $currentDate,
+                'updated_at' => $currentDate
+            ]);
+        } catch (QueryException $e) {
+            flash('URL already exists')->error();
+            return redirect()->route('home');
+        }
 
         flash('Url added successfully')->success();
 
