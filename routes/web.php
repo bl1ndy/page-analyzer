@@ -24,7 +24,7 @@ Route::get(
     function () {
         return view('url.create');
     }
-);
+)->name('home');
 
 Route::post('/', [UrlController::class, 'store']);
 
