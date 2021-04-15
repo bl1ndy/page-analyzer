@@ -16,8 +16,8 @@
         <header>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/urls">Sites</a></li>
+                    <li><a href="{{ route('home') }}">Home</a></li>
+                    <li><a href="{{ route('urls.index') }}">Sites</a></li>
                 </ul>
             </nav>
             <div>
