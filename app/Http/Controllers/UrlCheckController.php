@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use DiDom\Document;
 use DiDom\Query;
 use Carbon\Carbon;
+use Illuminate\Http\Client\ConnectionException;
 
 class UrlCheckController extends Controller
 {
@@ -22,10 +23,17 @@ class UrlCheckController extends Controller
         $urlId = $request->input()['url_id'];
         $url = $request->input()['url_name'];
         $currentDate = Carbon::now()->toDateTimeString();
-        $statusCode = Http::get($url)->status();
+
+        try {
+            $statusCode = Http::get($url)->status();
+        } catch (ConnectionException $e) {
+            flash('Can not resolve this URL. Please, try again later')->error();
+            return redirect()->route('urls.show', ['url' => $urlId]);
+        }
 
         $document = new Document();
         $document->loadHtmlFile($url);
+
         $h1 = $document->has('h1')
             ? $document->find('h1')[0]->text()
             : null;
