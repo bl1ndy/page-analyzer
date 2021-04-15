@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreUrlRequest;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -33,11 +32,12 @@ class UrlController extends Controller
     public function store(StoreUrlRequest $request)
     {
         $data = $request->validated();
+        $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
         DB::table('urls')->insert([
             'name' => $data['url']['name'],
-            'created_at' => Carbon::now()->toDateTimeString(),
-            'updated_at' => Carbon::now()->toDateTimeString()
+            'created_at' => $currentDate,
+            'updated_at' => $currentDate
         ]);
 
         flash('Url added successfully')->success();
