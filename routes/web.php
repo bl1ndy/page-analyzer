@@ -28,4 +28,4 @@ Route::get(
 
 Route::post('/', [UrlController::class, 'store']);
 
-Route::post('/urls/{url}/checks', [UrlCheckController::class, 'store']);
+Route::post('/urls/{id}/checks', [UrlCheckController::class, 'store']);
