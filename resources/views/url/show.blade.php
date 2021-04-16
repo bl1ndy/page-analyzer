@@ -6,7 +6,6 @@
         <form action="/urls/{url}/checks" method="post">
             @csrf
             <input type="hidden" name="url_name" value="{{$url->name}}">
-            <input type="hidden" name="url_id" value="{{$url->id}}">
             <input type="submit" value="Check URL">
         </form>
         @include('url.check.index')
