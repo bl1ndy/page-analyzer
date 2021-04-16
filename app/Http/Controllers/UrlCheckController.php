@@ -21,8 +21,11 @@ class UrlCheckController extends Controller
      */
     public function store(Request $request)
     {
-        $urlId = $request->input()['url_id'];
         $url = $request->input()['url_name'];
+        $urlId = DB::table('urls')
+            ->where('name', '=', $url)
+            ->first()
+            ->id;
         $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
         try {

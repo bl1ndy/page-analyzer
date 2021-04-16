@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class UrlCheckControllerTest extends TestCase
@@ -20,13 +21,14 @@ class UrlCheckControllerTest extends TestCase
     {
         Http::fake();
 
+        $url = DB::table('urls')->first()->name;
+        $urlId = DB::table('urls')->first()->id;
         $data = [
-            'url_id' => 1,
-            'url_name' => 'https://www.example.com/'
+            'url_name' => $url
         ];
 
         $dataForStorage = [
-            'url_id' => 1,
+            'url_id' => $urlId,
             'status_code' => 200
         ];
 
