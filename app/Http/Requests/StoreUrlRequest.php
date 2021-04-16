@@ -22,7 +22,6 @@ class StoreUrlRequest extends FormRequest
     {
         return [
             'url.name.required' => 'URL is required',
-            //'url.name.unique' => 'URL is already exists',
             'url.name.url' => 'Invalid url format'
         ];
     }
