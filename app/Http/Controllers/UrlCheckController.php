@@ -19,24 +19,24 @@ class UrlCheckController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        $url = $request->input()['url_name'];
-        $urlId = DB::table('urls')
-            ->where('name', '=', $url)
+        $url = DB::table('urls')
+            ->where('id', '=', $id)
             ->first()
-            ->id;
+            ->name;
+
         $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
         try {
             [$statusCode, $h1, $keywords, $description] = $this->getCodeAndContent($url);
         } catch (ConnectionException | RuntimeException $e) {
             flash('Can not resolve this URL. Please, try again later')->error();
-            return redirect()->route('urls.show', ['url' => $urlId]);
+            return redirect()->route('urls.show', $id);
         }
 
         DB::table('url_checks')->insert([
-            'url_id' => $urlId,
+            'url_id' => $id,
             'status_code' => $statusCode,
             'h1' => $h1,
             'keywords' => $keywords,
@@ -46,7 +46,7 @@ class UrlCheckController extends Controller
         ]);
 
         DB::table('urls')
-            ->where('id', '=', $urlId)
+            ->where('id', '=', $id)
             ->update([
                 'last_check' => $currentDate,
                 'last_status_code' => $statusCode
@@ -54,7 +54,7 @@ class UrlCheckController extends Controller
 
         flash('Url checked successfully')->success();
 
-        return redirect()->route('urls.show', ['url' => $urlId]);
+        return redirect()->route('urls.show', $id);
     }
 
     /**

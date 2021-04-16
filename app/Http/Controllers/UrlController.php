@@ -37,12 +37,12 @@ class UrlController extends Controller
         $url = $data['url']['name'];
 
         if (DB::table('urls')->where('name', $url)->exists()) {
-            $urlId = DB::table('urls')
+            $id = DB::table('urls')
                 ->where('name', '=', $url)
                 ->first()
                 ->id;
             flash('Url already exists')->success();
-            return redirect()->route('urls.show', ['url' => $urlId]);
+            return redirect()->route('urls.show', $id);
         }
 
         DB::table('urls')->insert([
