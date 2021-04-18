@@ -21,15 +21,15 @@ class UrlCheckController extends Controller
      */
     public function store(Request $request, $id)
     {
-        $url = DB::table('urls')
-            ->where('id', '=', $id)
-            ->first()
-            ->name;
-
+        $url = DB::table('urls')->find($id);
         $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
 
         try {
-            [$statusCode, $h1, $keywords, $description] = $this->getCodeAndContent($url);
+            $response = Http::get($url->name);
+            $document = new Document($response->body());
+            $h1 = optional($document->first('h1'))->text();
+            $keywords = optional($document->first('meta[name=keywords]'))->getAttribute('content');
+            $description = optional($document->first('meta[name=description]'))->getAttribute('content');
         } catch (ConnectionException | RuntimeException $e) {
             flash('Can not resolve this URL. Please, try again later')->error();
             return redirect()->route('urls.show', $id);
@@ -37,7 +37,7 @@ class UrlCheckController extends Controller
 
         DB::table('url_checks')->insert([
             'url_id' => $id,
-            'status_code' => $statusCode,
+            'status_code' => $response->status(),
             'h1' => $h1,
             'keywords' => $keywords,
             'description' => $description,
@@ -49,7 +49,7 @@ class UrlCheckController extends Controller
             ->where('id', '=', $id)
             ->update([
                 'last_check' => $currentDate,
-                'last_status_code' => $statusCode
+                'last_status_code' => $response->status()
             ]);
 
         flash('Url checked successfully')->success();
@@ -70,15 +70,9 @@ class UrlCheckController extends Controller
         $document = new Document();
         $document->loadHtmlFile($url);
 
-        $h1 = $document->has('h1')
-            ? $document->find('h1')[0]->text()
-            : null;
-        $keywords = $document->has('//meta[@name="keywords"]', 'XPATH')
-            ? $document->find('//meta[@name="keywords"]', Query::TYPE_XPATH)[0]->getAttribute('content')
-            : null;
-        $description = $document->has('//meta[@name="description"]', 'XPATH')
-            ? $document->find('//meta[@name="description"]', Query::TYPE_XPATH)[0]->getAttribute('content')
-            : null;
+        $h1 = optional($document->first('h1'))->text();
+        $keywords = optional($document->first('meta[name=keywords]'))->getAttribute('content');
+        $description = optional($document->first('meta[name=description]'))->getAttribute('content');
 
         return [$statusCode, $h1, $keywords, $description];
     }
