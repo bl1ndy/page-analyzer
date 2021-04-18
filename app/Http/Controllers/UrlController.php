@@ -11,7 +11,7 @@ class UrlController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Illuminate\View\View
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -36,12 +36,12 @@ class UrlController extends Controller
         $url = $data['url']['name'];
 
         if (DB::table('urls')->where('name', $url)->exists()) {
-            $id = DB::table('urls')
+            $urlId = DB::table('urls')
                 ->where('name', '=', $url)
                 ->first()
                 ->id;
             flash('Url already exists')->success();
-            return redirect()->route('urls.show', $id);
+            return redirect()->route('urls.show', $urlId);
         }
 
         DB::table('urls')->insert([
