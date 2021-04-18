@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use DiDom\Document;
-use DiDom\Query;
 use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use RuntimeException;
@@ -18,7 +17,7 @@ class UrlCheckController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  integer $id
-     * @return Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, $id)
     {

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUrlRequest;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
 use Carbon\Carbon;
 
 class UrlController extends Controller
@@ -28,7 +27,7 @@ class UrlController extends Controller
      *
      * @param StoreUrlRequest $request
      *
-     * @return Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreUrlRequest $request)
     {

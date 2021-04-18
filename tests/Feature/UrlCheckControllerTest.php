@@ -40,7 +40,7 @@ class UrlCheckControllerTest extends TestCase
             'last_status_code' => 200
         ];
         $html = file_get_contents(__DIR__ . '/../fixtures/url_check_test.html');
-        if (!$html) {
+        if ($html === false) {
             throw new \Exception("Invalid test file!");
         }
 
