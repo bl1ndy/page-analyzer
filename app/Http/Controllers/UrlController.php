@@ -33,19 +33,17 @@ class UrlController extends Controller
     {
         $data = $request->validated();
         $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
-        $url = $data['url']['name'];
 
-        if (DB::table('urls')->where('name', $url)->exists()) {
-            $urlId = DB::table('urls')
-                ->where('name', '=', $url)
-                ->first()
-                ->id;
+        $url = DB::table('urls')->where('name', '=', $data['url']['name'])->first();
+
+        if ($url !== null) {
+            $urlId = $url->id;
             flash('Url already exists')->success();
             return redirect()->route('urls.show', $urlId);
         }
 
         DB::table('urls')->insert([
-            'name' => $url,
+            'name' => $data['url']['name'],
             'created_at' => $currentDate,
             'updated_at' => $currentDate
         ]);
