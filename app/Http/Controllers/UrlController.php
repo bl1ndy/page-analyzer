@@ -12,7 +12,7 @@ class UrlController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\View\View
      */
     public function index()
     {
@@ -28,7 +28,7 @@ class UrlController extends Controller
      *
      * @param StoreUrlRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return Illuminate\Http\RedirectResponse
      */
     public function store(StoreUrlRequest $request)
     {
@@ -61,7 +61,7 @@ class UrlController extends Controller
      *
      * @param string $id
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function show($id)
     {

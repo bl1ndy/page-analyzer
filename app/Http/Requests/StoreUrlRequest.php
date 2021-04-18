@@ -34,7 +34,7 @@ class StoreUrlRequest extends FormRequest
      */
     public function withValidator($validator)
     {
-        $validator->after(function ($validator) {
+        $validator->after(function ($validator): void {
             $errors = $validator->errors();
             if ($errors->any()) {
                 foreach ($errors->all() as $message) {

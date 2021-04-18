@@ -40,6 +40,9 @@ class UrlCheckControllerTest extends TestCase
             'last_status_code' => 200
         ];
         $html = file_get_contents(__DIR__ . '/../fixtures/url_check_test.html');
+        if (!$html) {
+            throw new \Exception("Invalid test file!");
+        }
 
         Http::fake([$url => Http::response($html)]);
         $response = $this->post(route('urls.checks.store', $id));

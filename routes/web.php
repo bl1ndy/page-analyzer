@@ -21,7 +21,7 @@ Route::resources([
 
 Route::get(
     '/',
-    function () {
+    function (): Illuminate\View\View {
         return view('url.create');
     }
 )->name('home');
