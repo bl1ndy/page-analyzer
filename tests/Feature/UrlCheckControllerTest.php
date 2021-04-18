@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use Tests\TestCase;
 
 class UrlCheckControllerTest extends TestCase
@@ -14,28 +15,37 @@ class UrlCheckControllerTest extends TestCase
         parent::setUp();
 
         Artisan::call('migrate');
-        Artisan::call('db:seed');
     }
 
-    public function testStore()
+    public function testStore(): void
     {
-        Http::fake();
-
-        $url = DB::table('urls')->first()->name;
-        $urlId = DB::table('urls')->first()->id;
+        $currentDate = Carbon::now('Europe/Moscow')->toDateTimeString();
         $data = [
-            'url_name' => $url
+            'id' => 1,
+            'name' => 'http://test.com',
+            'created_at' => $currentDate,
+            'updated_at' => $currentDate
         ];
-
-        $dataForStorage = [
-            'url_id' => $urlId,
-            'status_code' => 200
+        $id = DB::table('urls')->insertGetId($data);
+        $url = $data['name'];
+        $expected = [
+            'url_id'   => $id,
+            'status_code' => 200,
+            'keywords'    => 'url, check, store, test',
+            'h1'          => 'URL check store test',
+            'description' => 'url check store test',
         ];
+        $expectedInUrls = [
+            'last_check' => $currentDate,
+            'last_status_code' => 200
+        ];
+        $html = file_get_contents(__DIR__ . '/../fixtures/url_check_test.html');
 
-        $response = $this->post('/urls/{url}/checks', $data);
+        Http::fake([$url => Http::response($html)]);
+        $response = $this->post(route('urls.checks.store', $id));
         $response->assertSessionHasNoErrors();
         $response->assertRedirect();
-
-        $this->assertDatabaseHas('url_checks', $dataForStorage);
+        $this->assertDatabaseHas('url_checks', $expected);
+        $this->assertDatabaseHas('urls', $expectedInUrls);
     }
 }
